@@ -10,8 +10,29 @@
       <span id="txtOut" style="white-space: nowrap"></span>
     </div>
     <ol>
-      <li>[Write the question here, and copy this for more questions]</li>
-      <p>[Write your answer here, and copy this for more answers]</p>
+      <li>[In part 1, is it possible to solve the problem using a single "for" loop?]</li>
+      <p>[yes]</p>
+      <li>[In part 2, can we create what is known as an "infinite" loop within the condition of the "while" loop?
+        Describe what would or would not be necessary to achieve this. Provide a thorough explanation of
+        your answer.]</li>
+      <p>[Dersom man setter et VELDIG stort spenn i hva den skal kjøre gjennom vil prosessen ta veldig 
+        lang tid. Det er ikke helt en "infenite" loop da den til slutt vil finne tallet.]</p>
+      <li>Discuss briefly how quickly or slowly a computer might be able to compute this, considering the
+        number of guesses and the time it takes. How does the program behave while it is guessing? Can
+        the program perform other tasks concurrently?]</li>
+      <p>[Det spørs på hva man setter av verdier, men hvis det er nær en infinite loop vil den praktiske 
+        "kjøretiden" overgås. Oppførsel under kjøring: Programmet bruker mye av CPU-kraften, og prosesserer 
+        hver gjetning én etter én, med mindre det er optimalisert for raskere kjøring.
+        Kjøring av andre oppgaver samtidig: Programmet kan kjøre andre oppgaver samtidig hvis det er laget med 
+        tråder (multithreading) eller kjører på et system som tillater multitasking. Men flere oppgaver samtidig 
+        kan redusere effektiviteten til gjetteprosessen, spesielt hvis CPU-ressursene er begrensede.]</p>
+      <li>[Explain the relationship between rows and columns in nested "for" loops. Can we, for instance,
+        change the order, considering rows to be innermost or columns to be innermost, or does this not
+        matter?]</li>
+      <p>[I nestede "for"-løkker bestemmer rekkefølgen på løkkene hvilken retning dataene prosesseres i. Hvis vi 
+        lar rader være den ytterste løkken og kolonner den innerste, går vi gjennom dataene rad for rad. Omvendt, 
+        hvis kolonner er ytterst og rader innerst, går vi kolonne for kolonne. Rekkefølgen kan endres uten at det 
+        teknisk påvirker resultatet, men ytelsen kan variere avhengig av datatilgangen, spesielt i store matriser.]</p>
     </ol>
     <script type="module" src="./task_3-2.mjs" defer></script>
   </body>
