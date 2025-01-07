@@ -1,5 +1,5 @@
 "use strict";
-
+import libSprite from "../../common/libs/libSprite.mjs";
 //--------------- Objects and Variables ----------------------------------//
 
 // prettier-ignore
