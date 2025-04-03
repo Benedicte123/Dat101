@@ -2,7 +2,7 @@
 import lib2d from "../../common/libs/lib2d.mjs";
 import libSound from "../../common/libs/libSound.mjs";
 import libSprite from "../../common/libs/libSprite.mjs";
-import { SpriteInfoList, GameProps, EGameStatus, startGame } from "./FlappyBird.mjs";
+import { SpriteInfoList, GameProps, EGameStatus, startGame, playSound, } from "./FlappyBird.mjs";
 
 /*
 Dere skal flytte FlappyBird Spriten til en fornuftig plass på skjermen.
@@ -81,6 +81,8 @@ export class TMenu {
         this.#spcvs.drawText(GameProps.score.toString(), this.#posScore);
         this.#spcvs.drawText(GameProps.bestScore.toString(), this.#posBestScore);
         this.#spButtonPlay.draw();
+        GameProps.soundMuted === GameProps.soundMuted;
+        playSound(GameProps.sounds.gameOver);
         break;
       case EGameStatus.playing:
         this.#spcvs.drawText(GameProps.score.toString(), this.#posPlayScore);
@@ -134,8 +136,12 @@ export class TMenu {
   #onClick = () => {
     if (this.#activeSprite === this.#spButtonPlay) {
       GameProps.status = EGameStatus.getReady;
+
       this.#spcvs.style.cursor = "default";
       setTimeout(this.#onCountDown, 1000);
+
+      playSound(GameProps.sounds.countDown);
+      GameProps.soundMuted === GameProps.soundMuted;
     }
   };
 
