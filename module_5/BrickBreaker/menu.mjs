@@ -31,8 +31,7 @@ export class TMenu {
     this.#spPlay = new libSprite.TSpriteButton(aSpriteCanvas, SpriteInfoList.Buttons, playPos);
     this.#spPlay.index = 3; 
     this.#spPlay.onClick = () => {
-      console.log("Play-knappen ble trykket!");
-      this.startCountdown(); }
+      console.log("Play-knappen ble trykket!");}
     
     //Home button
     const homePos = new lib2d.TPosition(650, 550);
@@ -78,20 +77,42 @@ export class TMenu {
   draw() {
     switch (GameProps.status) {
        case EGameStatus.idle:
-        this.#spStart.draw();
+         // Idle-modus: vis kun start-knappen
+      this.#spStart.visible = true;
+      this.#spStart.disable = false;
+      // Deaktiver og skjul andre knapper
+      this.#spPlay.visible = false;
+      this.#spHome.visible = false;
+      this.#spRestart.visible = false;
+      // Tegn start-knappen
+      this.#spStart.draw();
         break;
-      case EGameStatus.pause:
-        this.#spMenuBoard.draw();
-        this.#spPause.draw();
-        this.#spPlay.draw();
-        this.#spHome.draw();
-        this.#spRestart.draw();
-        break;
-      case EGameStatus.gameOver:
-        this.#spMenuBoard.draw();
+      case EGameStatus.pause: 
+      // Pause-modus: vis de knappene som skal være interaktive i pausemenyen
+      this.#spMenuBoard.visible = true;
+      this.#spPlay.visible = true;
+      this.#spHome.visible = true;
+      this.#spRestart.visible = true;
+      // Sørg for at start-knappen ikke vises:
+      this.#spStart.visible = false;
+      this.#spStart.disable = true;
+      // Tegn elementene
+      this.#spMenuBoard.draw();
+      this.#spPlay.draw();
+      this.#spHome.draw();
+      this.#spRestart.draw();
+      this.#spPause.draw();
         break;
       case EGameStatus.playing:
-       
+        // Når spillet er aktivt, kanskje bare pause-knappen skal vises
+        this.#spPause.visible = true;
+        this.#spPause.draw();
+        break;
+      case EGameStatus.gameOver:
+        // Her tegner du for eksempel menybrettet som skal vises ved game over
+        this.#spMenuBoard.draw();
+        break;
+      default:
         break;
     }
   } // end of draw         
@@ -138,15 +159,3 @@ export class TMenu {
     }
   }
 }
-
-
-  
-  /*unction animateSprite(){
-  spriteCanvas.clearCanvas();
-  spriteCanvas.drawSprite(spi, 100, 100, spIndex);
-  spIndex++;
-  if(spIndex >= spi.count){
-    spIndex = 0;
-  }
-}
-  */

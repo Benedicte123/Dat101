@@ -9,7 +9,6 @@ import { THero } from "./hero.mjs";
 import { TBall } from "./ball.mjs";
 import { TMenu } from "./menu.mjs";
 import { TBrick } from "./bricks.mjs";
-import { gameProps } from "../SimonSays/SimonSays.mjs";
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Variables, Constants and Objects
