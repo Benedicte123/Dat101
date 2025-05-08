@@ -17,6 +17,10 @@ export class TMenu {
   #homeTrigger = null;
   #restartTrigger = null;
   #resumeTrigger = null;
+  #totalScoreNumber;
+  #timeScoreNumber;
+  #currentCountdown = false;
+  #gameOverScoreNumber
   constructor(aSpriteCanvas) {
     this.#spcvs = aSpriteCanvas;
 
@@ -66,42 +70,75 @@ export class TMenu {
       if (this.#restartTrigger) this.#restartTrigger();
       console.log("Restart button clicked");
     };
+
+    //Total score - Brukt kode fra Arne Thomas
+    const totalScorePos = new lib2D.TPoint(10, 80);
+    this.#totalScoreNumber = new libSprite.TSpriteNumber(aSpriteCanvas, SheetData.Number, totalScorePos);
+    this.#totalScoreNumber.scale = 0.9;
+    this.#totalScoreNumber.visible = true; // Endre fra false til true for å vise tallet
+    this.#totalScoreNumber.value = 0; // Startverdi
+
+    //time score - Brukt kode fra Arne Thomas
+    const timeScorePos = new lib2D.TPoint(14, 10);
+    this.#timeScoreNumber = new libSprite.TSpriteNumber(aSpriteCanvas, SheetData.Number, timeScorePos);
+    this.#timeScoreNumber.scale = 0.6;
+    this.#timeScoreNumber.visible = true;
+    this.#timeScoreNumber.value = 0; 
+
+    //Score posisjon i GameOver
+    const GameOverScoreNumber = new lib2D.TPoint(600, 270);
+    this.#gameOverScoreNumber = new libSprite.TSpriteNumber(aSpriteCanvas, SheetData.Number, GameOverScoreNumber);
+    this.#gameOverScoreNumber.scale = 0.9;
+    this.#gameOverScoreNumber.visible = false; // Endre fra false til true for å vise tallet
+    this.#gameOverScoreNumber.value = GameProps.totalScore; // Startverdi
   }
 
-
-  
   draw() {
     switch (GameProps.gameStatus) {
       case EGameStatus.Idle:
-        //skjulte knapper
+        //skjule
         this.#buttonHome.visible = false;
         this.#buttonRestart.visible = false;
         this.#spResume.visible = false;
-        //tegner knapper
+        //tegne
         this.#spPlay.visible = true;
         this.#spPlay.draw();
         break;
       case EGameStatus.Playing:
-        //skjulte knapper
+        //skjule
         this.#spPlay.visible = false;
         this.#spResume.visible = false;
-        break;
+        //Tegne
+        this.#totalScoreNumber.visible = true;
+        this.#totalScoreNumber.draw();
+        this.#timeScoreNumber.visible = true;
+        this.#timeScoreNumber.draw();
+       break;
       case EGameStatus.Pause:
-        //skjulte knapper
+        //skjule
         this.#spPlay.visible = false;
-        //tegner knapper
+        //tegne
         this.#spResume.visible = true;
         this.#spResume.draw();
+        this.#totalScoreNumber.visible = true;
+        this.#totalScoreNumber.draw();
+        this.#timeScoreNumber.visible = true;
+        this.#timeScoreNumber.draw();
         break;
       case EGameStatus.GameOver: 
+        //skjule
         this.#spPlay.visible = false;
         this.#spResume.visible = false;
-        //tegner knapper
+        //tegne resten av meny
         this.#spMenuBoard.draw();
         this.#buttonHome.draw();
         this.#buttonHome.visible = true;
         this.#buttonRestart.visible = true;
         this.#buttonRestart.draw();
+        //Score i GameOver
+        this.#gameOverScoreNumber.value = GameProps.totalScore;
+        this.#gameOverScoreNumber.visible = true;
+        this.#gameOverScoreNumber.draw();
         break;
     }
     
@@ -119,4 +156,48 @@ export class TMenu {
   setResumeTrigger(callBack) {
     this.#resumeTrigger = callBack;
   }
+  updateTotalScore (value) { //TELLE EPLER?
+    this.#totalScoreNumber.value = value;
+  }
+  reduceTotalScore () {  //Brukt kode fra Arne Thomas
+    if (this.#totalScoreNumber.value >1) {
+      this.#totalScoreNumber.value--;
+      console.log ("ReduceTotalScore")
+    }
+  } 
+  startBaitCountdown () {
+    this.#timeScoreNumber.value = 20;
+    if (this.#currentCountdown) 
+      return;
+    
+    this.#currentCountdown = true;
+    let lastTick = Date.now();
+
+    const countdown = () => {
+      const now = Date.now();
+      const elapsed = now - lastTick;
+
+      if (elapsed >= 1000) {
+        lastTick = now;
+        if (this.#timeScoreNumber.value > 0) {
+          this.#timeScoreNumber.value--;
+        }
+      }
+    if (this.#timeScoreNumber.value > 0 && GameProps.gameStatus === EGameStatus.Playing) {
+      requestAnimationFrame(countdown);
+      } else {
+        this.#currentCountdown = false;
+      }
+    };
+      requestAnimationFrame(countdown);
+  }
+
+  updateTimeScore (score) {
+    this.#timeScoreNumber.value += score;
+  }
+
+  addRemainingSeconds () {
+    return this.#timeScoreNumber.value;
+  }
+
 } //slutt på TMenu

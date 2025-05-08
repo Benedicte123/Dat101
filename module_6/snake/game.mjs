@@ -38,7 +38,8 @@ export const GameProps = {
   snake: null,
   bait: null,
   menu: null,
-  
+  totalScore: 0,
+  baitSpawnTime: null,
 };
 
 //------------------------------------------------------------------------------------------
@@ -52,15 +53,27 @@ export function newGame() {
   GameProps.bait = new TBait(spcvs); // Initialize bait with a starting position
   gameSpeed = 4; // Reset game speed
   hndUpdateGame = setInterval(updateGame, 1000 / gameSpeed); // Update game every 1000ms / gameSpeed
+  GameProps.totalScore = 0; // Reset total score
+  GameProps.menu.updateTotalScore(0); // Update the score on the menu 
 }
 
-export function bateIsEaten() {
-  
+export function baitIsEaten() {
   console.log("Bait eaten!");
+  // Increase game speed
+ // REAKSJONSTID SCORE?
+  const timeUsed = Date.now() - GameProps.baitSpawnTime; // Calculate the time used to eat the bait
+  const timeUsedInSec = Math.floor(timeUsed / 1000); // Convert to seconds
+  const score = Math.max (0,10 - timeUsedInSec); // Calculate the score based on time used
+  GameProps.menu.updateTotalScore(score); // Update the score on the menu
+
+// Calculate the bonus score based on time used
+  const bonus = GameProps.menu.addRemainingSeconds();
+  GameProps.totalScore += bonus;
+  GameProps.menu.updateTotalScore(GameProps.totalScore); // Update the score on the menu
+  
   GameProps.snake.addSnakePart(); // Add a new part to the snake
   GameProps.bait.update(); // Move the bait to a new position
-  increaseGameSpeed(); // Increase game speed
- 
+  increaseGameSpeed();
 }
 
 
@@ -100,9 +113,6 @@ hndUpdateGame = setInterval(updateGame, 1000 / gameSpeed); // Update game every 
 console.log("Game canvas is rendering!");
 console.log("Game canvas is updating!");
   //newGame(); // Call this function from the menu to start a new game, remove this line when the menu is ready
-
-
-  
 }
 
 function drawGame() {
@@ -127,21 +137,8 @@ function drawGame() {
   }
   
   requestAnimationFrame(drawGame);
-
 }
-
-
-
-
-/* SLETTES?
-function startGame() {
-  newGame(); // Starter et nytt spill
-  GameProps.gameStatus = EGameStatus.Playing;
-  console.log("Game started!");
-}
-*/
   
-
 
 function updateGame() {
   // Update game logic here
@@ -157,8 +154,11 @@ function updateGame() {
 
 function increaseGameSpeed() {
   /* Increase game speed logic here */
-  console.log("Increase game speed!");
-}
+  gameSpeed += 0.5;
+  clearInterval(hndUpdateGame); // Clear the previous game interval
+  hndUpdateGame = setInterval(updateGame, 1000 / gameSpeed); // Update game every 1000ms / gameSpeed
+    console.log("Increase game speed!");
+ }
 
 
 //-----------------------------------------------------------------------------------------
