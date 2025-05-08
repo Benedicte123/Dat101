@@ -139,8 +139,10 @@ export class TMenu {
         
     onButtonNewGameClick = () => {
         newGame();
+        
     }
     
+ 
 
     // privat metode, den bruker interne variabler og kan ikke påberopes utenfra.
     #createColorHint (posIndex, colorIndex){
@@ -167,5 +169,15 @@ export class TMenu {
             GameProps.PlayerAnswers[i].disable = true;
             GameProps.PlayerAnswers[i] = null;
         }
+    }
+    resetHints() {
+        for (const hint of this.#colorHints) {
+          hint.visible = false;
+        }
+        this.#colorHints = [];
+      }
+
+    resetRoundNumber() {
+    this.#roundNumber = 1;
     }
 } // End of class TMenu

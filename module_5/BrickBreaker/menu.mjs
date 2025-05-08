@@ -12,7 +12,6 @@ export class TMenu {
   #spPause
   #spHome
   #spRestart
-  #spPauseIkon
   #activeSprite;
   #blinkInterval;   
   #blinkFrame = 0; 
@@ -77,14 +76,13 @@ export class TMenu {
   draw() {
     switch (GameProps.status) {
        case EGameStatus.idle:
-         // Idle-modus: vis kun start-knappen
-      this.#spStart.visible = true;
-      this.#spStart.disable = false;
       // Deaktiver og skjul andre knapper
       this.#spPlay.visible = false;
       this.#spHome.visible = false;
       this.#spRestart.visible = false;
+      this.#spPause.visible = false;
       // Tegn start-knappen
+      this.#spMenuBoard.draw();
       this.#spStart.draw();
         break;
       case EGameStatus.pause: 
@@ -104,6 +102,9 @@ export class TMenu {
       this.#spPause.draw();
         break;
       case EGameStatus.playing:
+        // Skjul start-knappen eksplisitt!
+        this.#spStart.visible = false;
+        this.#spStart.disable = true;
         // Når spillet er aktivt, kanskje bare pause-knappen skal vises
         this.#spPause.visible = true;
         this.#spPause.draw();
@@ -157,5 +158,22 @@ export class TMenu {
       // Etter stopp, sett knappen til en bestemt frame, f.eks. 0
       this.#spStart.index = 0;
     }
+  }
+
+  hide() {
+    this.#spMenuBoard.visible = false;
+    this.#spStart.visible = false;
+    this.#spStart.disable = true;
+    this.#spPlay.visible = false;
+    this.#spHome.visible = false;
+    this.#spPause.visible = false;
+    this.#spRestart.visible = false;
+  }
+
+  showPause() {
+    this.#spMenuBoard.visible = true;
+    this.#spPause.visible = true;
+    this.#spHome.visible = true;
+    this.#spRestart.visible = true;
   }
 }

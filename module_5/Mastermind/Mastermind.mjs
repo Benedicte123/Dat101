@@ -63,6 +63,19 @@ for (let i = 0; i < GameProps.ColorPickers.length; i++) {
   const colorPicker = GameProps.ColorPickers[i];
   spcvs.removeSpriteButton(colorPicker);
   }
+  // Tilbakestill tilstand
+  GameProps.ComputerAnswers = [];
+  GameProps.PlayerAnswers = [null, null, null, null];
+  GameProps.snapTo.positions = MastermindBoard.ColorAnswer.Row1.map(p => ({ x: p.x, y: p.y }));
+  GameProps.AnswerHintRow = MastermindBoard.AnswerHint.Row1;
+  
+
+  // Flytt rundeindikator til start
+  moveRoundIndicator();
+
+  // Fjern tidligere hint
+  GameProps.Menu.resetHints();
+  GameProps.Menu.resetRoundNumber();
   GameProps.ColorPickers= [
     new TColorPicker(spcvs, SpriteInfoList.ColorPicker, "Black", 0),
     new TColorPicker(spcvs, SpriteInfoList.ColorPicker, "Blue", 1), 

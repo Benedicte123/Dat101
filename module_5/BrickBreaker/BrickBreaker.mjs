@@ -125,15 +125,25 @@ function animateGame() {
 }
 
 export function startGame() {
-GameProps.status = EGameStatus.idle;
+//GameProps.status = EGameStatus.idle;
 //We must reset the game properties here:
-GameProps.bricks = [];
-GameProps.menu.reset();
-GameProps.ball.reset();
-GameProps.hero.reset();
- // GameProps.Buttons.reset();
- // GameProps.StartBtn.reset();
-console.log("startGame() ble kalt!");
+//GameProps.bricks = [];
+  GameProps.EGameStatus = EGameStatus.playing;
+  // Skjul meny
+  GameProps.menu.hide();
+  console.log("startGame() ble kalt!");
+  requestAnimationFrame(drawGame); // <- start visning
+}
+
+export function pauseGame() {
+  GameProps.EGameStatus = EGameStatus.paused;
+  GameProps.menu.showPause(); // viser pauseknapper
+  console.log("Spillet er satt på pause");
+}
+export function resumeGame() {
+  GameProps.eGameStatus = eGameStatus.playing;
+  GameProps.menu.hide(); // skjuler pausemeny
+  requestAnimationFrame(drawGame);
 }
 
 function updateGame() {
